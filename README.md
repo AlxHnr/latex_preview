@@ -36,26 +36,26 @@ program to build your files, but this is covered by the documentation.
 ## Commands
 
 These are only brief explanations of some commands. For more detailed
-informations, see ':help latex_preview'.
+informations, see `:help latex_preview`.
 
-### LatexPreview
+### `:LatexPreview`
 
 Builds the current buffer and previews the result. It will update the
 result each time you save your file. (Unless you have reconfigured this).
 If you exit Vim, latex_preview will clean up for you and will shut down all
 processes, like the document viewer, properly.
 
-### LatexPreviewStop
+### `:LatexPreviewStop`
 
 Stops previewing your file, shuts down everything properly and cleans up.
 latex_preview will also clean up if you exit Vim, so you don't need to call
 this explicitly.
 
-### LatexPreviewRebuild
+### `:LatexPreviewRebuild`
 
 Rebuilds the current file and shows you the errors on failure.
 
-### LatexPreviewExport
+### `:LatexPreviewExport`
 
 Builds your file and exports the resulting document. It takes the path to
 the output file as argument. This command doesn't require latex_preview to
