@@ -1,0 +1,227 @@
+*latex_preview*                      Build and preview LaTeX files while editing.
+
+
+       _         _____   __  __                          _~
+      | |    __ |_   _|__\ \/ /     _ __  _ __ _____   _(_) _____      __~
+      | |   / _` || |/ _ \\  /     | '_ \| '__/ _ \ \ / / |/ _ \ \ /\ / /~
+      | |__| (_| || |  __//  \     | |_) | | |  __/\ V /| |  __/\ V  V /~
+      |_____\__,_||_|\___/_/\_\____| .__/|_|  \___| \_/ |_|\___| \_/\_/~
+                             |_____|_|~
+
+
+CONTENTS                                                 *latex_preview-contents*
+
+		1. Description....................................|latex_preview-description|
+		2. Functions and commands............................|latex_preview-commands|
+			2.1 Start LaTeX preview......................................|LatexPreview|
+			2.2 Stop LaTeX preview...................................|LatexPreviewStop|
+			2.3 Rebuild the current LaTeX file....................|LatexPreviewRebuild|
+			2.4 Export current LaTeX file..........................|LatexPreviewExport|
+		3. Options............................................|latex_preview-options|
+			3.1 Document viewer.......................|g:latex_preview#document_viewer|
+			3.2 LaTeX Compiler...............................|g:latex_preview#compiler|
+			3.3 Compiler Arguments..................|g:Latex_preview#get_compiler_args|
+			3.4 Output file name formatting...........|g:Latex_preview#get_output_file|
+			3.5 Rebuild Events.........................|g:latex_preview#rebuild_events|
+			3.6 Rebuild Delay.............................|g:latex_preview#least_delay|
+		4. License............................................|latex_preview-license|
+
+===============================================================================
+1. Description                                        *latex_preview-description*
+
+|latex_preview| is a plugin, that allows you to preview the LaTeX code you are
+editing. By default it rebuilds your file only when you save it. But It allows
+you to specify how and when the file should be build and what document viewer
+should be used. |latex_preview| is not limited to PDF and supports everything
+your LaTeX compilers and document viewers support. You just need to configure
+it. See |latex_preview-options|.
+
+It operates by building your file in the background, keeps track of all
+processes that it starts and properly shuts them down again. |latex_preview|
+also manages temporary files and directories for you and also cleans them up.
+You can edit different LaTeX files in different buffers and/or Vim instances
+and they wont interfere with each other.
+
+===============================================================================
+2. Functions and commands                                *latex_preview-commands*
+
+-------------------------------------------------------------------------------
+2.1 Start LaTeX preview                                            *LatexPreview*
+
+Just open a tex file and execute the command |LatexPreview| to begin
+previewing your file. First it will try to build your file twice and notify
+you on errors. Most LaTeX compilers need up to two runs, in order to generate
+stuff like i.e. the table of contents. Then it will try to launch your
+document viewer. If everything succeeds, |latex_preview| will continue its
+work in background unless you stop it, or exit Vim. If |latex_preview| is
+already active and you try to run |LatexPreview| again, it will just try to
+re-setup the stuff that is not working (like i.e. when your document viewer
+crashed).
+
+-------------------------------------------------------------------------------
+2.2 Stop LaTeX preview                                         *LatexPreviewStop*
+
+You can execute |LatexPreviewStop| to stop the preview. You can also just exit
+Vim, and |latex_preview| does the rest.
+
+-------------------------------------------------------------------------------
+2.3 Rebuild the current LaTeX file                          *LatexPreviewRebuild*
+
+Run |LatexPreviewRebuild|, if you want to do a verbose rebuild with user
+interaction. Its the same kind of build, that |LatexPreview| does, when it
+starts the first time.
+
+-------------------------------------------------------------------------------
+2.4 Export current LaTeX file                                *LatexPreviewExport*
+
+The command |LatexPreviewExport| takes only one parameter, which is the file
+or directory where your current LaTeX file should be exported to. It completes
+filenames and if your path contains whitespaces, you should escape them with
+a backslash '\'. If you don't have a preview running, this command will create
+a temporary directory, build there your file twice, export it and then clean
+it up again. If you are already previewing your file and it has already been
+build, this command will simply use the output file from there.
+
+===============================================================================
+3. Options                                                *latex_preview-options*
+
+-------------------------------------------------------------------------------
+3.1 Document viewer                             *g:latex_preview#document_viewer*
+
+This setting allows you to specify the document viewer that should be used.
+Every document viewer is supported, that can automatically reload documents
+when they change. |latex_preview| searches for various different document
+viewers on your system in the following order, and uses the first one it
+finds:
+>
+	 * evince
+	 * okular
+	 * zathura
+	 * qpdfview
+<
+-------------------------------------------------------------------------------
+3.2 LaTeX compiler                                     *g:latex_preview#compiler*
+
+This is the program that builds your LaTeX file. This variable should only be
+set to the program/command without any arguments. The build command will be
+executed from inside the directory of your LaTeX file.
+
+Default:
+>
+	let g:latex_preview#compiler = 'pdflatex'
+<
+-------------------------------------------------------------------------------
+3.3 Compiler Arguments                        *g:Latex_preview#get_compiler_args*
+
+This is a |Funcref| variable that refers to a function, which is used to
+generate the build arguments on initialisation. Notice, that "Latex_preview"
+is capitalized. The function takes one argument, which is a dictionary that
+contains the following keys: "tmpdir" and "tmpfile".
+
+"tmpdir" contains the path to the temporary directory, where the build output
+should be written to. It ends with a slash.
+
+"tmpfile" is the temporary file, that contains your LaTeX code. This file is
+always updated before each build, and doesn't require your real source file to
+be written to the disk. This file was intended to be compiled.
+
+Make sure to let your LaTeX compiler makes use of this. All the other
+informations can be obtained by using Vims internal 'expand' function, since
+this function is called from the source buffer. Don't forget to 'shellescape'
+paths.
+
+Default:
+>
+	function! s:get_compiler_args(build_info) " {{{
+		return '-output-directory ' . shellescape(a:build_info.tmpdir)
+			\ . ' -interaction=nonstopmode '
+			\ . shellescape(a:build_info.tmpdir . expand('%:t'))
+	endfunction " }}}
+
+	let g:Latex_preview#get_compiler_args = function('s:get_compiler_args')
+<
+-------------------------------------------------------------------------------
+3.4 Output file name formatting                 *g:Latex_preview#get_output_file*
+
+This variable is similar to |g:Latex_preview#get_compiler_args| but returns
+the name of the output file. Make sure, "Latex_preview" is capitalized.
+This value is mandatory for features like launching the document viewer with
+the right arguments, or calling |LatexPreviewExport|. You shouldn't
+'shellescape' this string. |latex_preview| needs the raw string for internal
+usage, and escapes it when necessary.
+
+Default:
+>
+	function! s:get_output_file(build_info) " {{{
+		return a:build_info.tmpdir . expand('%:t:r') . '.pdf'
+	endfunction " }}}
+
+	let g:Latex_preview#get_output_file = function('s:get_output_file')
+<
+-------------------------------------------------------------------------------
+3.5 Rebuild Events                               *g:latex_preview#rebuild_events*
+
+This variable contains a comma separated list of events, that trigger a
+rebuild of your LaTeX file. By default it only rebuilds your file if you save
+it. If you want to rebuild it when you stop typing for a while, set it to:
+>
+	let g:latex_preview#rebuild_events = 'CursorHold,CursorHoldI'
+<
+Note: this depends on the 'updatetime' variable.
+
+If you want to rebuild the file each time it changes, set this variable to:
+>
+	let g:latex_preview#rebuild_events = 'TextChanged,TextChangedI'
+<
+|latex_preview| wont start another build, if there is already one. If your
+file is being rebuild to frequently, you can set |g:latex_preview#least_delay|
+to an appropriate value.
+
+For a brief overview of all events, use:
+	:help autocommand-events
+
+For a detailed explanation, see:
+	:help autocmd-events-abc
+
+Default:
+>
+	let g:latex_preview#rebuild_events = 'BufWritePost'
+<
+-------------------------------------------------------------------------------
+3.6 Rebuild Delay                                   *g:latex_preview#least_delay*
+
+This is the least time in seconds, that should pass, before |latex_preview|
+starts another build. This option is ignored, if the user forces a build by
+calling |LatexPreview|, |LatexPreviewRebuild| or any other command that may
+cause a build.
+
+Default:
+>
+	let g:latex_preview#least_delay = '0'
+<
+===============================================================================
+4. License                                                *latex_preview-license*
+
+Copyright (c) 2014 Alexander Heinrich <alxhnr@nudelpost.de>
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event will the authors be held liable for any damages
+arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, and to alter it and redistribute it
+freely, subject to the following restrictions:
+
+   1. The origin of this software must not be misrepresented; you must
+      not claim that you wrote the original software. If you use this
+      software in a product, an acknowledgment in the product
+      documentation would be appreciated but is not required.
+
+   2. Altered source versions must be plainly marked as such, and must
+      not be misrepresented as being the original software.
+
+   3. This notice may not be removed or altered from any source
+      distribution.
+
+
+vim:ts=2:ft=help:nonumber
