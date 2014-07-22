@@ -94,10 +94,10 @@ when they change. |latex_preview| searches for various different document
 viewers on your system in the following order, and uses the first one it
 finds:
 >
-	 * evince
-	 * okular
-	 * zathura
-	 * qpdfview
+	* evince
+	* okular
+	* zathura
+	* qpdfview
 <
 -------------------------------------------------------------------------------
 3.2 LaTeX compiler                                     *g:latex_preview#compiler*
