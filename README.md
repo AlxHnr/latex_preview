@@ -62,6 +62,7 @@ the output file as argument. This command doesn't require latex_preview to
 be running.
 
 Example:
+
 	:LatexPreviewExport ~/Documents/my_document.pdf
 
 ## License
