@@ -14,7 +14,7 @@ define custom autocmds that will trigger a rebuild.
 
 For installation refer to the manual of your plugin manager.
 
-This plugin was only testet on Linux and operates by spawning shell
+This plugin was only tested on Linux and operates by spawning shell
 commands in the background. But it should work on all platforms that
 support this. It also depends on Vim's mkdir function. This plugin assumes
 that the document viewer auto-refreshes the document on modifications.
