@@ -98,7 +98,8 @@ endfunction " }}}
 function! s:build_verbose(id) " {{{
 	call s:build_wait_verbose(a:id)
 
-	execute 'noautocmd silent! write! ' . s:instances[a:id].tmpfile
+	execute 'noautocmd silent! write! '
+	  \ . escape(s:instances[a:id].tmpfile, '\ ')
 
 	call s:clear_echo("Building '" . s:instances[a:id].filename . "' ...")
 
