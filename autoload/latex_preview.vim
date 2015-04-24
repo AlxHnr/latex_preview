@@ -99,7 +99,7 @@ function! s:build_verbose(id) " {{{
 	call s:build_wait_verbose(a:id)
 
 	execute 'noautocmd silent! write! '
-	  \ . escape(s:instances[a:id].tmpfile, '\ ')
+		\	. escape(s:instances[a:id].tmpfile, '\ ')
 
 	call s:clear_echo("Building '" . s:instances[a:id].filename . "' ...")
 
@@ -153,7 +153,7 @@ function! s:build_background(id) " {{{
 	endif
 
 	execute 'noautocmd silent! write! '
-	  \ . escape(s:instances[a:id].tmpfile, '\ ')
+		\	. escape(s:instances[a:id].tmpfile, '\ ')
 
 	let s:instances[a:id].build_pid =
 		\	system(s:instances[a:id].cd_command . ' >/dev/null 2>&1 && ('
