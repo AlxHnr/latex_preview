@@ -152,7 +152,8 @@ function! s:build_background(id) " {{{
 		return
 	endif
 
-	execute 'noautocmd silent! write! ' . s:instances[a:id].tmpfile
+	execute 'noautocmd silent! write! '
+	  \ . escape(s:instances[a:id].tmpfile, '\ ')
 
 	let s:instances[a:id].build_pid =
 		\	system(s:instances[a:id].cd_command . ' >/dev/null 2>&1 && ('
