@@ -11,21 +11,21 @@
 
 CONTENTS                                                 *latex_preview-contents*
 
-		1. Description....................................|latex_preview-description|
-		2. Functions and commands............................|latex_preview-commands|
-			2.1 Start LaTeX preview......................................|LatexPreview|
-			2.2 Stop LaTeX preview...................................|LatexPreviewStop|
-			2.3 Rebuild the current LaTeX file....................|LatexPreviewRebuild|
-			2.4 Export current LaTeX file..........................|LatexPreviewExport|
-		3. Options............................................|latex_preview-options|
-			3.1 Document viewer.......................|g:latex_preview#document_viewer|
-			3.2 LaTeX Compiler...............................|g:latex_preview#compiler|
-			3.3 Compiler Arguments......................|g:latex_preview#compiler_args|
-			3.4 Override all Compiler Arguments.....|g:Latex_preview#get_compiler_args|
-			3.5 Output file name formatting...........|g:Latex_preview#get_output_file|
-			3.6 Rebuild Events.........................|g:latex_preview#rebuild_events|
-			3.7 Rebuild Delay.............................|g:latex_preview#least_delay|
-		4. License............................................|latex_preview-license|
+    1. Description....................................|latex_preview-description|
+    2. Functions and commands............................|latex_preview-commands|
+      2.1 Start LaTeX preview......................................|LatexPreview|
+      2.2 Stop LaTeX preview...................................|LatexPreviewStop|
+      2.3 Rebuild the current LaTeX file....................|LatexPreviewRebuild|
+      2.4 Export current LaTeX file..........................|LatexPreviewExport|
+    3. Options............................................|latex_preview-options|
+      3.1 Document viewer.......................|g:latex_preview#document_viewer|
+      3.2 LaTeX Compiler...............................|g:latex_preview#compiler|
+      3.3 Compiler Arguments......................|g:latex_preview#compiler_args|
+      3.4 Override all Compiler Arguments.....|g:Latex_preview#get_compiler_args|
+      3.5 Output file name formatting...........|g:Latex_preview#get_output_file|
+      3.6 Rebuild Events.........................|g:latex_preview#rebuild_events|
+      3.7 Rebuild Delay.............................|g:latex_preview#least_delay|
+    4. License............................................|latex_preview-license|
 
 ===============================================================================
 1. Description                                        *latex_preview-description*
@@ -95,10 +95,10 @@ when they change. |latex_preview| searches for various different document
 viewers on your system in the following order, and uses the first one it
 finds:
 >
-	* evince
-	* okular
-	* zathura
-	* qpdfview
+  * evince
+  * okular
+  * zathura
+  * qpdfview
 <
 -------------------------------------------------------------------------------
 3.2 LaTeX compiler                                     *g:latex_preview#compiler*
@@ -109,7 +109,7 @@ executed from inside the directory of your LaTeX file.
 
 Default:
 >
-	let g:latex_preview#compiler = 'pdflatex'
+  let g:latex_preview#compiler = 'pdflatex'
 <
 -------------------------------------------------------------------------------
 3.3 Compiler Arguments                            *g:latex_preview#compiler_args*
@@ -118,7 +118,7 @@ Additional arguments to pass to the latex compiler.
 
 Default:
 >
-	let g:latex_preview#compiler_args = ''
+  let g:latex_preview#compiler_args = ''
 <
 -------------------------------------------------------------------------------
 3.4 Override all Compiler Arguments           *g:Latex_preview#get_compiler_args*
@@ -142,13 +142,13 @@ paths.
 
 Default:
 >
-	function! s:get_compiler_args(build_info) " {{{
-		return '-output-directory ' . shellescape(a:build_info.tmpdir)
-			\ . ' -interaction=nonstopmode ' . g:latex_preview#compiler_args
-			\ . ' ' . shellescape(a:build_info.tmpdir . expand('%:t'))
-	endfunction " }}}
+  function! s:get_compiler_args(build_info) " {{{
+    return '-output-directory ' . shellescape(a:build_info.tmpdir)
+      \ . ' -interaction=nonstopmode ' . g:latex_preview#compiler_args
+      \ . ' ' . shellescape(a:build_info.tmpdir . expand('%:t'))
+  endfunction " }}}
 
-	let g:Latex_preview#get_compiler_args = function('s:get_compiler_args')
+  let g:Latex_preview#get_compiler_args = function('s:get_compiler_args')
 <
 -------------------------------------------------------------------------------
 3.5 Output file name formatting                 *g:Latex_preview#get_output_file*
@@ -162,11 +162,11 @@ usage, and escapes it when necessary.
 
 Default:
 >
-	function! s:get_output_file(build_info) " {{{
-		return a:build_info.tmpdir . expand('%:t:r') . '.pdf'
-	endfunction " }}}
+  function! s:get_output_file(build_info) " {{{
+    return a:build_info.tmpdir . expand('%:t:r') . '.pdf'
+  endfunction " }}}
 
-	let g:Latex_preview#get_output_file = function('s:get_output_file')
+  let g:Latex_preview#get_output_file = function('s:get_output_file')
 <
 -------------------------------------------------------------------------------
 3.6 Rebuild Events                               *g:latex_preview#rebuild_events*
@@ -175,27 +175,27 @@ This variable contains a comma separated list of events, that trigger a
 rebuild of your LaTeX file. By default it only rebuilds your file if you save
 it. If you want to rebuild it when you stop typing for a while, set it to:
 >
-	let g:latex_preview#rebuild_events = 'CursorHold,CursorHoldI'
+  let g:latex_preview#rebuild_events = 'CursorHold,CursorHoldI'
 <
 Note: this depends on the 'updatetime' variable.
 
 If you want to rebuild the file each time it changes, set this variable to:
 >
-	let g:latex_preview#rebuild_events = 'TextChanged,TextChangedI'
+  let g:latex_preview#rebuild_events = 'TextChanged,TextChangedI'
 <
 |latex_preview| wont start another build, if there is already one. If your
 file is being rebuild to frequently, you can set |g:latex_preview#least_delay|
 to an appropriate value.
 
 For a brief overview of all events, use:
-	:help autocommand-events
+  :help autocommand-events
 
 For a detailed explanation, see:
-	:help autocmd-events-abc
+  :help autocmd-events-abc
 
 Default:
 >
-	let g:latex_preview#rebuild_events = 'BufWritePost'
+  let g:latex_preview#rebuild_events = 'BufWritePost'
 <
 -------------------------------------------------------------------------------
 3.7 Rebuild Delay                                   *g:latex_preview#least_delay*
@@ -207,7 +207,7 @@ cause a build.
 
 Default:
 >
-	let g:latex_preview#least_delay = '0'
+  let g:latex_preview#least_delay = '0'
 <
 ===============================================================================
 4. License                                                *latex_preview-license*
