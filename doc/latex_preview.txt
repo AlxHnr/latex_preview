@@ -20,10 +20,11 @@ CONTENTS                                                 *latex_preview-contents
 		3. Options............................................|latex_preview-options|
 			3.1 Document viewer.......................|g:latex_preview#document_viewer|
 			3.2 LaTeX Compiler...............................|g:latex_preview#compiler|
-			3.3 Compiler Arguments..................|g:Latex_preview#get_compiler_args|
-			3.4 Output file name formatting...........|g:Latex_preview#get_output_file|
-			3.5 Rebuild Events.........................|g:latex_preview#rebuild_events|
-			3.6 Rebuild Delay.............................|g:latex_preview#least_delay|
+			3.3 Compiler Arguments......................|g:latex_preview#compiler_args|
+			3.4 Override all Compiler Arguments.....|g:Latex_preview#get_compiler_args|
+			3.5 Output file name formatting...........|g:Latex_preview#get_output_file|
+			3.6 Rebuild Events.........................|g:latex_preview#rebuild_events|
+			3.7 Rebuild Delay.............................|g:latex_preview#least_delay|
 		4. License............................................|latex_preview-license|
 
 ===============================================================================
@@ -111,7 +112,16 @@ Default:
 	let g:latex_preview#compiler = 'pdflatex'
 <
 -------------------------------------------------------------------------------
-3.3 Compiler Arguments                        *g:Latex_preview#get_compiler_args*
+3.3 Compiler Arguments                            *g:latex_preview#compiler_args*
+
+Additional arguments to pass to the latex compiler.
+
+Default:
+>
+	let g:latex_preview#compiler_args = ''
+<
+-------------------------------------------------------------------------------
+3.4 Override all Compiler Arguments           *g:Latex_preview#get_compiler_args*
 
 This is a |Funcref| variable that refers to a function, which is used to
 generate the build arguments on initialisation. Notice, that "Latex_preview"
@@ -134,14 +144,14 @@ Default:
 >
 	function! s:get_compiler_args(build_info) " {{{
 		return '-output-directory ' . shellescape(a:build_info.tmpdir)
-			\ . ' -interaction=nonstopmode '
-			\ . shellescape(a:build_info.tmpdir . expand('%:t'))
+			\ . ' -interaction=nonstopmode ' . g:latex_preview#compiler_args
+			\ . ' ' . shellescape(a:build_info.tmpdir . expand('%:t'))
 	endfunction " }}}
 
 	let g:Latex_preview#get_compiler_args = function('s:get_compiler_args')
 <
 -------------------------------------------------------------------------------
-3.4 Output file name formatting                 *g:Latex_preview#get_output_file*
+3.5 Output file name formatting                 *g:Latex_preview#get_output_file*
 
 This variable is similar to |g:Latex_preview#get_compiler_args| but returns
 the name of the output file. Make sure, "Latex_preview" is capitalized.
@@ -159,7 +169,7 @@ Default:
 	let g:Latex_preview#get_output_file = function('s:get_output_file')
 <
 -------------------------------------------------------------------------------
-3.5 Rebuild Events                               *g:latex_preview#rebuild_events*
+3.6 Rebuild Events                               *g:latex_preview#rebuild_events*
 
 This variable contains a comma separated list of events, that trigger a
 rebuild of your LaTeX file. By default it only rebuilds your file if you save
@@ -188,7 +198,7 @@ Default:
 	let g:latex_preview#rebuild_events = 'BufWritePost'
 <
 -------------------------------------------------------------------------------
-3.6 Rebuild Delay                                   *g:latex_preview#least_delay*
+3.7 Rebuild Delay                                   *g:latex_preview#least_delay*
 
 This is the least time in seconds, that should pass, before |latex_preview|
 starts another build. This option is ignored, if the user forces a build by
@@ -202,7 +212,7 @@ Default:
 ===============================================================================
 4. License                                                *latex_preview-license*
 
-Copyright (c) 2014 Alexander Heinrich <alxhnr@nudelpost.de>
+Copyright (c) 2017 Alexander Heinrich
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
