@@ -25,7 +25,8 @@ CONTENTS                                                 *latex_preview-contents
       3.5 Output file name formatting...........|g:Latex_preview#get_output_file|
       3.6 Rebuild Events.........................|g:latex_preview#rebuild_events|
       3.7 Rebuild Delay.............................|g:latex_preview#least_delay|
-    4. License............................................|latex_preview-license|
+    4. Notes on packages like minted........................|latex_preview-notes|
+    5. License............................................|latex_preview-license|
 
 ===============================================================================
 1. Description                                        *latex_preview-description*
@@ -210,7 +211,22 @@ Default:
   let g:latex_preview#least_delay = '0'
 <
 ===============================================================================
-4. License                                                *latex_preview-license*
+4. Notes on packages like minted                            *latex_preview-notes*
+
+|latex_preview| manages its own temporary build directory. This causes build
+failure with some packages. Thus it is necessary to pass the build path to the
+package. Example for minted:
+>
+  \usepackage[outputdir=.latex_preview_build_dir]{minted}
+<
+Minted calls external programs during build. Most LaTeX distributions disable
+this for security reasons. To enable it again, add this to your .vimrc or
+init.vim:
+>
+  let g:latex_preview#compiler_args = '-shell-escape'
+<
+===============================================================================
+5. License                                                *latex_preview-license*
 
 Copyright (c) 2017 Alexander Heinrich
 
