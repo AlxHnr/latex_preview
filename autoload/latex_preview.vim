@@ -1,21 +1,21 @@
-" Copyright (c) 2014 Alexander Heinrich <alxhnr@nudelpost.de> {{{
-" 
+" Copyright (c) 2017 Alexander Heinrich {{{
+"
 " This software is provided 'as-is', without any express or implied
 " warranty. In no event will the authors be held liable for any damages
 " arising from the use of this software.
-" 
+"
 " Permission is granted to anyone to use this software for any purpose,
 " including commercial applications, and to alter it and redistribute it
 " freely, subject to the following restrictions:
-" 
+"
 "    1. The origin of this software must not be misrepresented; you must
 "       not claim that you wrote the original software. If you use this
 "       software in a product, an acknowledgment in the product
 "       documentation would be appreciated but is not required.
-" 
+"
 "    2. Altered source versions must be plainly marked as such, and must
 "       not be misrepresented as being the original software.
-" 
+"
 "    3. This notice may not be removed or altered from any source
 "       distribution.
 " }}}
@@ -88,7 +88,7 @@ function! s:dir_ensure_existence(path) " {{{
 	return 1
 endfunction " }}}
 function! s:dir_remove(path) " {{{
-	call system('rm -rf ' . a:path)
+	call system('rm -rf ' . shellescape(a:path))
 endfunction " }}}
 
 " -------------------------------------------------------------------------
@@ -206,7 +206,7 @@ function! s:instance_new(id) " {{{
 		return 0
 	endif
 
-	let l:tmpdir = tempname() . '/'
+	let l:tmpdir = expand('%:p:h') . '/.latex_preview_build_dir/'
 	if !s:dir_ensure_existence(l:tmpdir)
 		return 0
 	endif
