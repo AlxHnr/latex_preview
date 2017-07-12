@@ -73,3 +73,22 @@ Example:
 ```vim
 :LatexPreviewExport ~/Documents/my_document.pdf
 ```
+
+## Frequently asked questions
+
+### How is it different from [vim-latex-live-preview](https://github.com/xuhdev/vim-latex-live-preview)?
+
+Years ago i was using Xuhdev's [vim-latex-live-preview](https://github.com/xuhdev/vim-latex-live-preview),
+but was unhappy with lots of things. It wasn't possible to define custom
+events that trigger a rebuild. Neither did it create a temporary directory
+for all the output and clutter. The plugin had also other quirks and things
+i disliked. So i wrote my own, which was superior back then. But nowadays?
+I don't know. Development on [vim-latex-live-preview](https://github.com/xuhdev/vim-latex-live-preview)
+seems to be active, so i can't tell whats better.
+
+### Does it use Neovims/Vim-8's async features?
+
+No. This plugin is much older than both of these. It implements its own
+async spawning of commands. This has the disadvantage that the first build
+is blocking. On non-blocking builds, error messages are silently ignored.
+Use `LatexPreviewRebuild` to get the error message if something is messy.
