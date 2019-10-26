@@ -1,3 +1,8 @@
+**Deprecated!** Use [vimtex](https://github.com/lervag/vimtex) instead. It
+can launch your PDF viewer and does asynchronous continuous compilation.
+[Vimtex](https://github.com/lervag/vimtex) has superior error handling and
+can handle documents which are split into multiple files.
+
 A simple plugin, which automatically (re)builds your LaTeX files, launches
 your document viewer and manages all the process tracking and cleanup
 stuff.
